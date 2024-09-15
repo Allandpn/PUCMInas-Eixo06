@@ -1,4 +1,5 @@
 ﻿using mf_api_web_services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace mf_api_web_services.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VeiculosController : ControllerBase
     {
         private readonly AppDbContext _context;
