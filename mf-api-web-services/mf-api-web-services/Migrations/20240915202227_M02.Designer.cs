@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mf_api_web_services.Models;
 
@@ -11,9 +12,11 @@ using mf_api_web_services.Models;
 namespace mf_api_web_services.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240915202227_M02")]
+    partial class M02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,17 +76,12 @@ namespace mf_api_web_services.Migrations
                     b.Property<string>("Rel")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("VeiculoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ConsumoId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.HasIndex("VeiculoId");
 
@@ -141,7 +139,7 @@ namespace mf_api_web_services.Migrations
                     b.ToTable("Veiculos");
                 });
 
-            modelBuilder.Entity("mf_api_web_services.Models.VeiculoUsuarios", b =>
+            modelBuilder.Entity("mf_api_web_services.Models.VeiculoUsuario", b =>
                 {
                     b.Property<int>("VeiculoId")
                         .HasColumnType("int");
@@ -153,7 +151,7 @@ namespace mf_api_web_services.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("VeiculoUsuarios");
+                    b.ToTable("VeiculoUsuario");
                 });
 
             modelBuilder.Entity("mf_api_web_services.Models.Consumo", b =>
@@ -173,16 +171,12 @@ namespace mf_api_web_services.Migrations
                         .WithMany("Links")
                         .HasForeignKey("ConsumoId");
 
-                    b.HasOne("mf_api_web_services.Models.Usuario", null)
-                        .WithMany("Links")
-                        .HasForeignKey("UsuarioId");
-
                     b.HasOne("mf_api_web_services.Models.Veiculo", null)
                         .WithMany("Links")
                         .HasForeignKey("VeiculoId");
                 });
 
-            modelBuilder.Entity("mf_api_web_services.Models.VeiculoUsuarios", b =>
+            modelBuilder.Entity("mf_api_web_services.Models.VeiculoUsuario", b =>
                 {
                     b.HasOne("mf_api_web_services.Models.Usuario", "Usuario")
                         .WithMany("Veiculos")
@@ -208,8 +202,6 @@ namespace mf_api_web_services.Migrations
 
             modelBuilder.Entity("mf_api_web_services.Models.Usuario", b =>
                 {
-                    b.Navigation("Links");
-
                     b.Navigation("Veiculos");
                 });
 
