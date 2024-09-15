@@ -8,7 +8,7 @@ namespace mf_api_web_services.Models
         {              
         }
 
-        public DbSet<Veiculo> Veiculo { get; set; }
+        public DbSet<Veiculo> Veiculos { get; set; }
 
         public DbSet<Consumo> Consumos { get; set; }
     }
