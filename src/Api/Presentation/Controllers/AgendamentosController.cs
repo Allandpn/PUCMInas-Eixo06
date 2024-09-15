@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Interfaces.Repositorys;
+using Domain.Interfaces.Services;
+using Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
@@ -6,6 +9,11 @@ namespace Presentation.Controllers;
 [ApiController]
 public class AgendamentosController : ControllerBase
 {
+    private readonly IAgendamentoService _agendamentoService;
+    public AgendamentosController(IAgendamentoService agendamentoService)
+    {
+        _agendamentoService = agendamentoService;
+    }
 
     [HttpGet]
     public IEnumerable<string> BuscarTodosAgendamentosAsync()
@@ -20,8 +28,10 @@ public class AgendamentosController : ControllerBase
     }
 
     [HttpPost]
-    public void Post([FromBody] string value)
+    public IActionResult Post([FromBody] AgendamentoModel input)
     {
+
+        return Ok(input);
     }
 
     [HttpPut("{id}")]
