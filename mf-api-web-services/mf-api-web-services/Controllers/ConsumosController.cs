@@ -7,11 +7,11 @@ namespace mf_api_web_services.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VeiculosController : ControllerBase
+    public class ConsumosController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public VeiculosController(AppDbContext context)
+        public ConsumosController(AppDbContext context)
         {
             _context = context;
         }
@@ -19,18 +19,18 @@ namespace mf_api_web_services.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var model = await _context.Veiculos.ToListAsync();
+            var model = await _context.Consumos.ToListAsync();
             return Ok(model);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(int id)
         {
-            var model = await _context.Veiculos
-                .Include(t => t.Consumos)
+            var model = await _context.Consumos
+                .Include(t => t.Veiculo)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (model == null) 
+            if (model == null)
                 return NotFound();
 
             GerarLinks(model);
@@ -38,14 +38,10 @@ namespace mf_api_web_services.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Veiculo model)
+        public async Task<ActionResult> Create(Consumo model)
         {
-            if (model.AnoModelo <= 1900 && model.AnoFabricacao <= 1900)
-            {
-                return BadRequest(new { message = "Ano de Fabricação e Ano do Modelo devem ser maiores do que 1900" });
-            }
-
-            _context.Veiculos.Add(model);
+           
+            _context.Consumos.Add(model);
 
             await _context.SaveChangesAsync();
 
@@ -54,19 +50,19 @@ namespace mf_api_web_services.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Veiculo model)
+        public async Task<ActionResult> Update(int id, Consumo model)
         {
             if (model.Id != id)
                 return BadRequest();
 
-            var modelDb = _context.Veiculos
+            var modelDb = _context.Consumos
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
 
             if (modelDb == null)
                 return NotFound();
 
-            _context.Veiculos.Update(model);
+            _context.Consumos.Update(model);
 
             await _context.SaveChangesAsync();
 
@@ -77,19 +73,19 @@ namespace mf_api_web_services.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var model = await _context.Veiculos.FindAsync(id);
+            var model = await _context.Consumos.FindAsync(id);
 
             if (model == null)
                 return NotFound();
 
-            _context.Veiculos.Remove(model);
+            _context.Consumos.Remove(model);
 
             await _context.SaveChangesAsync();
-            
+
             return NoContent();
         }
 
-        private void GerarLinks(Veiculo model)
+        private void GerarLinks(Consumo model)
         {
             model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "self", metodo: "GET"));
             model.Links.Add(new LinkDto(model.Id, Url.ActionLink(), rel: "update", metodo: "PUT"));
