@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0" version="24.7.17" pages="3">
   <diagram name="Login-Renato" id="03018318-947c-dd8e-b7a3-06fadd420f32">
-    <mxGraphModel dx="3369" dy="2510" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+    <mxGraphModel dx="2672" dy="1760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -472,8 +472,8 @@
             <mxPoint x="-580" y="570" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="XLhhQLwNxboojujIq6jB-50" value="&lt;h1 style=&quot;margin-top: 0px; font-size: 36px;&quot;&gt;Tela PRIVADA DAVI&lt;/h1&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-740" y="552.5" width="360" height="47.5" as="geometry" />
+        <mxCell id="XLhhQLwNxboojujIq6jB-50" value="&lt;h1 style=&quot;margin-top: 0px; font-size: 36px;&quot;&gt;Tela PRIVADA DAVI&lt;br&gt;&lt;br&gt;(LARA)&lt;/h1&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-740" y="552.5" width="360" height="157.5" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
