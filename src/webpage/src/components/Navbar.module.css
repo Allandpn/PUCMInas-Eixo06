@@ -1,0 +1,9 @@
+.navbar_link {
+  text-decoration: none; /* Remove sublinhado */
+  color: #f8f8f8; /* Mantém a cor do contexto atual */
+}
+
+.navbar_link:hover {
+  color: #adb5bd; /* Cor no hover */
+  text-decoration: none; /* Mantém sem sublinhado no hover */
+}
