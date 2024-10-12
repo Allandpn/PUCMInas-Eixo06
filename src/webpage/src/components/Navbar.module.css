@@ -1,9 +1,17 @@
 .navbar_link {
-  text-decoration: none; /* Remove sublinhado */
-  color: #f8f8f8; /* Mantém a cor do contexto atual */
+  text-decoration: none;
+  color: #f8f8f8;
+  font-size: 1.2rem;
+  margin-right: 15px;
 }
 
 .navbar_link:hover {
-  color: #adb5bd; /* Cor no hover */
-  text-decoration: none; /* Mantém sem sublinhado no hover */
+  color: #aca7a9;
+
+  text-decoration: none;
+}
+
+.active {
+  color: #c7cace;
+  text-decoration: none;
 }
