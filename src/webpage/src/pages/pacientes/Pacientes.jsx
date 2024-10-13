@@ -4,7 +4,11 @@ import { Card, Button, Container, Row, Col } from "react-bootstrap";
 
 const Pacientes = () => {
   const url = "https://localhost:5005/usuario/";
-  const { data: pacientes, loading, error } = useFetch(url);
+  const { data: pacientes, httpConfig, loading, error } = useFetch(url);
+
+  const handleDelete = (id) => {
+    httpConfig(id, "DELETE");
+  };
 
   //console.log(pacientes);
   return (

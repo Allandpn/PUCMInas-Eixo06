@@ -7,6 +7,7 @@ export const useFetch = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [itemId, setItemId] = useState(null);
+  const [shouldReload, setShouldReload] = useState(false);
 
   const httpConfig = useCallback((data, methodType) => {
     const headers = { "Content-Type": "aplication/json" };
@@ -27,9 +28,16 @@ export const useFetch = (url) => {
       setLoading(true);
       try {
         const res = await fetch(requestUrl, config || {});
-        const json = await res.json();
-        setData(json);
+        if (!res.ok) throw new Error(`Erro: ${res.status}`);
+        if (method !== "DELETE") {
+          const json = await res.json();
+          setData(json);
+        } else {
+          setShouldReload(true);
+        }
+        setMethod(null);
         setError(null);
+        setConfig(null);
       } catch (err) {
         console.error(err.message);
         setError(err.message);
@@ -37,17 +45,18 @@ export const useFetch = (url) => {
         setLoading(false);
       }
     },
-    [config]
+    [config, method]
   );
 
   useEffect(() => {
-    if (!method) {
+    if (!method || shouldReload) {
       performFetch(url);
+      setShouldReload(false);
     } else if (method === "POST" || method === "DELETE") {
-      const targetUrl = method === "DELETE" ? `${url}/${itemId}` : url;
+      const targetUrl = method === "DELETE" ? `${url}${itemId}` : url;
       performFetch(targetUrl);
     }
-  }, [url, method, itemId, performFetch]);
-
+  }, [url, method, itemId, shouldReload, performFetch]);
+  console.log(data);
   return { data, httpConfig, loading, error };
 };
