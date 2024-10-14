@@ -9,14 +9,22 @@ export const useFetch = (url) => {
   const [itemId, setItemId] = useState(null);
   const [shouldReload, setShouldReload] = useState(false);
 
-  const httpConfig = useCallback((data, methodType) => {
-    const headers = { "Content-Type": "aplication/json" };
+  const httpConfig = useCallback((dados, methodType) => {
+    const headers = { "Content-Type": "application/json" };
     const config = { method: methodType, headers };
 
-    if (methodType === "POST") {
-      config.body = JSON.stringify(data);
+    if (methodType === "POST" || methodType === "PUT") {
+      if (!dados || typeof dados !== "object") {
+        console.error("Os dados precisam ser um objeto válido.");
+        return;
+      }
+      config.body = JSON.stringify(dados);
     } else if (methodType === "DELETE") {
-      setItemId(data);
+      if (!dados) {
+        console.error("Um ID é necessário para DELETE.");
+        return;
+      }
+      setItemId(dados);
     }
 
     setConfig(config);
@@ -29,20 +37,21 @@ export const useFetch = (url) => {
       try {
         const res = await fetch(requestUrl, config || {});
         if (!res.ok) throw new Error(`Erro: ${res.status}`);
-        if (method !== "DELETE") {
+        if (method === "DELETE" || method === "POST" || method === "PUT") {
+          setShouldReload(true);
+        } else {
           const json = await res.json();
           setData(json);
-        } else {
-          setShouldReload(true);
         }
-        setMethod(null);
+
         setError(null);
-        setConfig(null);
       } catch (err) {
         console.error(err.message);
         setError(err.message);
       } finally {
         setLoading(false);
+        setConfig(null);
+        setMethod(null);
       }
     },
     [config, method]

@@ -1,19 +1,37 @@
+import { useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import AddPacienteModal from "./PacienteModalAdd";
 
 const Pacientes = () => {
   const url = "https://localhost:5005/usuario/";
   const { data: pacientes, httpConfig, loading, error } = useFetch(url);
 
+  const [showModal, setShowModal] = useState(false); // Controle do modal
+  const handleOpenModal = () => setShowModal(true); // Abre o modal
+  const handleCloseModal = () => setShowModal(false); // Fecha o modal
+
+  const handleAddPaciente = (data) => {
+    httpConfig(data, "POST");
+    handleCloseModal(); // Fecha o modal após adicionar
+  };
+
   const handleDelete = (id) => {
     httpConfig(id, "DELETE");
   };
 
-  //console.log(pacientes);
   return (
     <Container className="mt-4">
       <h1 className="text-center mb-4">Pacientes</h1>
+
+      <Button
+        variant="primary"
+        onClick={handleOpenModal} // Abre o modal ao clicar
+        className="mb-3"
+      >
+        Adicionar Paciente
+      </Button>
 
       {error && <p className="text-danger text-center">Ocorreu um erro...</p>}
       {loading && <p className="text-center">Carregando pacientes...</p>}
@@ -48,6 +66,11 @@ const Pacientes = () => {
             </Col>
           ))}
       </Row>
+      <AddPacienteModal
+        show={showModal} // Passa o estado do modal
+        handleClose={handleCloseModal} // Função para fechar o modal
+        handleAddPaciente={handleAddPaciente} // Função para adicionar agendamento
+      />
     </Container>
   );
 };
