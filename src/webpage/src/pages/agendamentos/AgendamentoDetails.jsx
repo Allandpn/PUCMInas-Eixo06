@@ -1,13 +1,43 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card, Button, Container } from "react-bootstrap";
 import { useFetch } from "../../hooks/useFetch";
+import styles from "./AgendamentoDetails.module.css";
+import AddAgendamentoModal from "./AgendamentoModal"; // Modal para Adicionar ou Editar
 
 export default function AgendamentoDetails() {
   const { id } = useParams();
-  //console.log(id);
+
   const url = "https://localhost:5005/agendamentos/" + id;
-  const { data: agendamento, loading, error } = useFetch(url);
-  //console.log({ agendamento });
+  const { data: agendamento, httpConfig, loading, error } = useFetch(url);
+
+  const [showModal, setShowModal] = useState(false); // Controle do modal
+  const [editMode, setEditMode] = useState(false); // Controle do modo de edição
+  const [currentAgendamento, setCurrentAgendamento] = useState(null); // Agendamento atual para edição
+
+  // Função para abrir o modal no modo de edição
+  const handleOpenEditModal = (agendamento) => {
+    setEditMode(true); // Define modo de edição
+    setCurrentAgendamento(agendamento); // Define o agendamento a ser editado
+    setShowModal(true); // Abre o modal
+  };
+
+  const handleCloseModal = () => setShowModal(false); // Fecha o modal
+
+  // Função para adicionar ou editar um agendamento
+  const handleAddOrEditAgendamento = (data) => {
+    if (editMode) {
+      httpConfig(data, "PUT"); // Faz requisição PUT para editar
+    } else {
+      httpConfig(data, "POST"); // Faz requisição POST para adicionar
+    }
+    handleCloseModal(); // Fecha o modal após adicionar/editar
+  };
+
+  const handleDelete = (id) => {
+    httpConfig(id, "DELETE");
+  };
+
   return (
     <Container className="mt-4">
       {error && <p>Ocorreu um erro...</p>}
@@ -29,12 +59,36 @@ export default function AgendamentoDetails() {
               {agendamento.emailMedicoResponsavel}
               <br />
             </Card.Text>
-            <Link to="/agendamentos">
-              <Button variant="secondary">Voltar</Button>
-            </Link>
+            <div className="d-flex justify-content-center">
+              <Link to="/agendamentos" className={styles.agen_det_cont_bot}>
+                <Button variant="secondary">Voltar</Button>
+              </Link>
+              <Link className={styles.agen_det_cont_bot}>
+                <Button
+                  variant="warning"
+                  onClick={() => handleOpenEditModal(agendamento)} // Abre o modal para edição
+                >
+                  Editar
+                </Button>
+              </Link>
+              <Link className={styles.agen_det_cont_bot}>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDelete(agendamento.id)}
+                >
+                  Excluir
+                </Button>
+              </Link>
+            </div>
           </Card.Body>
         </Card>
       )}
+      <AddAgendamentoModal
+        show={showModal} // Passa o estado do modal
+        handleClose={handleCloseModal} // Função para fechar o modal
+        handleAddAgendamento={handleAddOrEditAgendamento} // Função para adicionar/editar agendamento
+        agendamento={currentAgendamento} // Passa o agendamento atual para edição
+      />
     </Container>
   );
 }

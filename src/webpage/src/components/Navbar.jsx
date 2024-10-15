@@ -6,7 +6,13 @@ import styles from "./Navbar.module.css";
 const Navbarr = () => {
   return (
     <div>
-      <Navbar bg="primary" variant="light" expand="lg" fixed="top">
+      <Navbar
+        bg="primary"
+        variant="light"
+        expand="lg"
+        fixed="top"
+        className={`${styles.navbar_link}`}
+      >
         <Container>
           <Nav className="me-auto">
             <NavLink

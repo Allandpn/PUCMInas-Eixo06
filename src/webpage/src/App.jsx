@@ -13,6 +13,7 @@ function App() {
         </div>
 
         <Footer />
+        
       </div>
     </div>
   );

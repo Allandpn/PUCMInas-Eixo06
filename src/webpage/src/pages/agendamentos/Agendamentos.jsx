@@ -70,22 +70,10 @@ const Agendamentos = () => {
                   <Card.Text>
                     <strong>Data:</strong> {agendamento.dataAtendimento}
                   </Card.Text>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-center">
                     <Link to={`/agendamento/${agendamento.id}`}>
                       <Button variant="primary">Ver Detalhes</Button>
                     </Link>
-                    <Button
-                      variant="warning"
-                      onClick={() => handleOpenEditModal(agendamento)} // Abre o modal para edição
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(agendamento.id)}
-                    >
-                      Excluir
-                    </Button>
                   </div>
                 </Card.Body>
               </Card>

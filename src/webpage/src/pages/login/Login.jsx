@@ -1,17 +1,7 @@
-<<<<<<< HEAD
-const Login = () => {
-  return (
-    <div>
-      <h1>Login lara</h1>
-    </div>
-  );
-};
-=======
 import { useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import './login.module.css'; // Importação do CSS
->>>>>>> 814a0a89e96ad742e1c43d3ee007702dc39e5dba
+import "./login.module.css"; // Importação do CSS
 
 export default function Login() {
   const [email, setEmail] = useState("");
