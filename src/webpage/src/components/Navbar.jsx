@@ -5,40 +5,43 @@ import styles from "./Navbar.module.css";
 
 const Navbarr = () => {
   return (
-    <div>
-      <Navbar
-        bg="primary"
-        variant="light"
-        expand="lg"
-        fixed="top"
-        className={`${styles.navbar_link}`}
-      >
-        <Container>
-          <Nav className="me-auto">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `${styles.navbar_link} ${isActive ? styles.active : ""}`.trim()
-              }
-            >
-              Home
+    
+      <Navbar className={styles.navbar}> 
+       
+        
+                <NavLink className={styles.brand} to="/">
+              Agenda <span>Fisio</span>
             </NavLink>
-            <NavLink to="/login" className={styles.navbar_link}>
-              Login
-            </NavLink>
-            <NavLink to="/dashboard" className={styles.navbar_link}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/agendamentos" className={styles.navbar_link}>
-              Agendamentos
-            </NavLink>
-            <NavLink to="/pacientes" className={styles.navbar_link}>
-              Pacientes
-            </NavLink>
-          </Nav>
-        </Container>
+                
+                  <ul className={styles.links_list}>
+                    
+                    <li>
+                      <NavLink to="/dashboard" className={({ isActive }) => (isActive ? styles.active : "")}>
+                        Dashboard
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/agendamentos" className={({ isActive }) => (isActive ? styles.active : "")}>
+                        Agendamentos
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/pacientes" className={({ isActive }) => (isActive ? styles.active : "")}>
+                        Pacientes
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/login" className={({ isActive }) => (isActive ? styles.active : "")}>
+                        Login
+                      </NavLink>
+                    </li>
+                  </ul>
+   
+        
+   
+     
       </Navbar>
-    </div>
+   
   );
 };
 
