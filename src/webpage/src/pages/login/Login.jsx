@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import './login.module.css'; // Importação do CSS
+import styles from './Login.module.css'; // Importação do CSS
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,33 +19,35 @@ export default function Login() {
   };
 
   return (
-    <Container className="login-container mt-4">
+    <Container className="login-container mt-4 ">
       <Card className="login-card">
         <Card.Body>
-          <Card.Title className="login-title">Login</Card.Title>
+          <Card.Title className="login-title">Bem-vindo de Volta!</Card.Title>
           {error && <p className="text-danger login-error">{error}</p>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formEmail">
-              <Form.Label className="login-label">Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Digite seu email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formSenha">
-              <Form.Label className="login-label">Senha</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Digite sua senha"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit" className="login-button">
+          <Form.Group controlId="formEmail">
+  <Form.Label className="login-label">Email</Form.Label>
+  <Form.Control
+    type="email"
+    placeholder="Digite seu email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    required
+    className="login-input"
+  />
+</Form.Group>
+<Form.Group controlId="formSenha"  >
+  <Form.Label className="login-label">Senha</Form.Label>
+  <Form.Control
+    type="password"
+    placeholder="Digite sua senha"
+    value={senha}
+    onChange={(e) => setSenha(e.target.value)}
+    required
+    className="login-input"
+  />
+</Form.Group>
+            <Button variant="primary" type="submit" className={`"login-button" ${styles.login_button}`} >
               Entrar
             </Button>
           </Form>
