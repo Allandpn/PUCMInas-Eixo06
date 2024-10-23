@@ -17,16 +17,21 @@ const AddAgendamentoModal = ({
     horario: "",
   });
 
+  
+
   // Preenche o formulário com os dados do agendamento para edição
   useEffect(() => {
     if (agendamento) {
-      const [data, horario] = agendamento.dataAtendimento.split("-");
+      const [dataParte, horarioParte] = agendamento.dataAtendimento.split("T");
+      const [ano, mes, dia] = dataParte.split("-");
+      const [hora, minuto] = horarioParte.split(":");
       setFormData({
         nomePaciente: agendamento.nomePaciente,
         email: agendamento.email,
         emailMedicoResponsavel: agendamento.emailMedicoResponsavel,
-        data: `${data}-${horario.substring(0, 2)}`,
-        horario: `${horario.substring(3, 8)}`,
+        data: `${ano}-${mes}-${dia}`,
+        horario: `${hora}:${minuto}`,
+      
       });
     } else {
       // Reseta o formulário se não houver agendamento
@@ -40,6 +45,8 @@ const AddAgendamentoModal = ({
     }
   }, [agendamento]);
 
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -48,32 +55,36 @@ const AddAgendamentoModal = ({
     }));
   };
 
-  // Função para combinar data e horário no formato desejado
-  const formatarDataAtendimento = (data, horario) => {
-    const [ano, mes, dia] = data.split("-"); // 'yyyy-MM-dd'
-    const [horas, minutos] = horario.split(":"); // 'HH:mm'
-    return `${dia}-${mes}-${ano}-${horas}-${minutos}`; // 'dd-MM-yyyy-HH-mm'
+ // Função para combinar data e horário no formato desejado
+const formatarDataAtendimento = (data, horario) => {
+  const [ano, mes, dia] = data.split("-"); // 'yyyy-MM-dd'
+  const [horas, minutos] = horario.split(":"); // 'HH:mm'
+  return `${dia}-${mes}-${ano}-${horas}-${minutos}`; // 'dd-MM-yyyy-HH-mm'
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Combina data e horário no formato desejado
+  const dataAtendimento = formatarDataAtendimento(
+    formData.data,
+    formData.horario
+  );
+
+  // Cria uma cópia de formData sem 'data' e 'horario'
+  const { data, horario, ...formDataSemDataHorario } = formData;
+
+  // Cria o objeto agendamento com 'dataAtendimento' e os demais dados
+  const agendamentoFinal = {
+    ...formDataSemDataHorario,
+    dataAtendimento,
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Passa o objeto atualizado para a função de adicionar/editar agendamento
+  handleAddAgendamento(agendamentoFinal);
+  handleClose(); // Fecha o modal
+};
 
-    // Combina data e horário no formato desejado
-    const dataAtendimento = formatarDataAtendimento(
-      formData.data,
-      formData.horario
-    );
-
-    // Cria o objeto agendamento para ser enviado
-    const agendamentoFinal = {
-      ...formData,
-      dataAtendimento,
-    };
-
-    // Passa o objeto atualizado para a função de adicionar/editar agendamento
-    handleAddAgendamento(agendamentoFinal);
-    handleClose(); // Fecha o modal
-  };
 
   return (
     <Modal show={show} onHide={handleClose}>
