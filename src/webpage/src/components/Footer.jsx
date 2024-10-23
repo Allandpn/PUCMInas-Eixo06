@@ -45,7 +45,7 @@ const Footer = () => {
           <section className="">
             <MDBContainer className="text-center text-md-start mt-5">
               <MDBRow className="mt-3">
-                <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
+                <MDBCol md="3" lg="4" xl="" className="mx-auto mb-4">
                   <h6 className="text-uppercase fw-bold mb-4">
                     <MDBIcon icon="gem" className="me-3" />
                     Company name

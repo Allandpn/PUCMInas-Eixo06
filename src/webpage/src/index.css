@@ -21,7 +21,7 @@ nav button {
   border: none;
   color: #000;
   transition: 0.4s;
-  font-size: 1em;
+  font-size: 0.85em;
   cursor: pointer;
   font-family: "Montserrat", sans-seri;
 }
