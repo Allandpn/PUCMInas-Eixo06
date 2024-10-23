@@ -40,12 +40,9 @@ const Pacientes = () => {
         {pacientes &&
           pacientes.map((paciente) => (
             <Col key={paciente.id} sm={12} md={6} lg={4} className="mb-4">
-              <Card>
+              <Card className="shadow-lg border-0">
                 <Card.Body>
-                  <Card.Title></Card.Title>
-                  <Card.Text>
-                    <strong>Paciente:</strong> {paciente.nomeUsuario}
-                  </Card.Text>
+                  <Card.Title className="mb-2">{paciente.nomeUsuario}</Card.Title>
                   <Card.Text>
                     <strong>Email:</strong> {paciente.email}
                   </Card.Text>
@@ -53,9 +50,9 @@ const Pacientes = () => {
                     <Link to={`/paciente/${paciente.id}`}>
                       <Button variant="primary">Ver Detalhes</Button>
                     </Link>
-                    <Button variant="warning">Editar</Button>
+                    <Button variant="outline-primary">Editar</Button>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       onClick={() => handleDelete(paciente.id)}
                     >
                       Excluir
@@ -66,10 +63,11 @@ const Pacientes = () => {
             </Col>
           ))}
       </Row>
+
       <AddPacienteModal
         show={showModal} // Passa o estado do modal
         handleClose={handleCloseModal} // Função para fechar o modal
-        handleAddPaciente={handleAddPaciente} // Função para adicionar agendamento
+        handleAddPaciente={handleAddPaciente} // Função para adicionar paciente
       />
     </Container>
   );
