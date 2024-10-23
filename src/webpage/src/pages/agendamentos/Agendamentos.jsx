@@ -3,6 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import AddAgendamentoModal from "./AgendamentoModal"; // Modal para Adicionar ou Editar
+import styles from "./Agendamento.module.css";
 
 const Agendamentos = () => {
   const url = "https://localhost:5005/agendamentos/";
@@ -44,7 +45,9 @@ const Agendamentos = () => {
 
   return (
     <Container className="mt-4">
-      <h1 className="text-center mb-4">Agendamentos</h1>
+      <h1 className={`${styles.btn_add_agend} text-center mb-4`}>Agendamentos</h1>
+      
+
 
       <Button
         variant="primary"
