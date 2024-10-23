@@ -55,9 +55,11 @@ export default function AgendamentoDetails() {
               <strong>Data:</strong> {agendamento.dataAtendimento}
               <br />
               <br />
+              {/*
               <strong>Email Medico:</strong>{" "}
               {agendamento.emailMedicoResponsavel}
               <br />
+              */}
             </Card.Text>
             <div className="d-flex justify-content-center">
               <Link to="/agendamentos" className={styles.agen_det_cont_bot}>
