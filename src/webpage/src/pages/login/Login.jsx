@@ -20,7 +20,7 @@ export default function Login() {
 
   return (
     <Container className={`${styles.login_container} mt-4`}>
-      <Card className="login-card">
+      <Card className={styles.login_card}>
         <Card.Body>
           <Card.Title className="login-title">Bem-vindo de Volta!</Card.Title>
           {error && <p className="text-danger login-error">{error}</p>}
@@ -56,7 +56,7 @@ export default function Login() {
             </Button>
           </Form>
           <p className="mt-2">
-            Não tem uma conta? <Link to="/registrar">Registre-se aqui</Link>
+            Não tem uma conta? <Link to="/register">Registre-se aqui</Link>
           </p>
         </Card.Body>
       </Card>
