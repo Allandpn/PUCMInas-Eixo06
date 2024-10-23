@@ -1,60 +1,39 @@
 import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
-  const [formData, setFormData] = useState({
-    nomeUsuario: "",
-    password: "",
-    email: "",
-    telefone: "",
-    tipo: "",
-    perfil: "",
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+
+
+
+
+export default function Register() {
+
+  const [nomeUsuario, setNomeUsuario] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [perfil, setPerfil] = useState("");
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  }
 
-    const paciente = {
-      ...formData,
-      tipo: parseInt(formData.tipo, 10), // Converte para inteiro
-      perfil: parseInt(formData.perfil, 10), // Converte para inteiro
-    };
+  const handleChange = (e) => {
+    e.preventDefault();
+  }
 
-    // Passa o objeto atualizado para a função de adicionar paciente
-    handleAddPaciente(paciente);
-    handleClose();
-    setFormData({
-      // Reseta o formulário
-      nomeUsuario: "",
-      password: "",
-      email: "",
-      telefone: "",
-      tipo: "",
-      perfil: "",
-    });
-  };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Adicionar Usuario</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+   
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formNome">
             <Form.Label>Nome do Usuario</Form.Label>
             <Form.Control
               type="text"
               name="nomeUsuario"
-              value={formData.nomeUsuario}
+              value={nomeUsuario}
               onChange={handleChange}
               placeholder="nome"
               required
@@ -66,7 +45,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             <Form.Control
               type="password"
               name="password"
-              value={formData.password}
+              value={password}
               onChange={handleChange}
               required
             />
@@ -77,7 +56,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             <Form.Control
               type="email"
               name="email"
-              value={formData.email}
+              value={email}
               onChange={handleChange}
               placeholder="Digite o email do paciente"
               required
@@ -88,7 +67,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             <Form.Label>Telefone</Form.Label>
             <Form.Control
               name="telefone"
-              value={formData.telefone}
+              value={telefone}
               onChange={handleChange}
               required
             />
@@ -98,7 +77,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             <Form.Label>Tipo</Form.Label>
             <Form.Select
               name="tipo" // Nome da propriedade no estado
-              value={formData.tipo} // Valor do estado
+              value={tipo} // Valor do estado
               onChange={handleChange} // Função que atualiza o estado
               required
             >
@@ -112,7 +91,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             <Form.Label>Perfil</Form.Label>
             <Form.Select
               name="perfil" // Nome da propriedade no estado
-              value={formData.perfil} // Valor do estado
+              value={perfil} // Valor do estado
               onChange={handleChange} // Função que atualiza o estado
               required
             >
@@ -126,9 +105,6 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
             Adicionar
           </Button>
         </Form>
-      </Modal.Body>
-    </Modal>
+ 
   );
-};
-
-export default AddPacienteModal;
+}

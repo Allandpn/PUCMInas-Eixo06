@@ -3,6 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col, Badge } from "react-bootstrap";
 import AddAgendamentoModal from "./AgendamentoModal"; // Modal para Adicionar ou Editar
+import styles from "./Agendamento.module.css";
 
 const Agendamentos = () => {
   const url = "https://localhost:5005/agendamentos/";
@@ -40,17 +41,16 @@ const Agendamentos = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <div className="text-center">
-        <h1 className="display-4">Agendamentos</h1>
-        <p className="lead text-muted">Gerencie seus agendamentos de forma eficiente</p>
-      </div>
+    <Container className="mt-4">
+      <h1 className="text-center mb-4">Agendamentos</h1>
 
-      <div className="text-center mb-4">
-        <Button variant="primary" size="lg" onClick={handleOpenModal}>
-          Adicionar Novo Agendamento
-        </Button>
-      </div>
+      <Button
+        variant="primary"
+        onClick={handleOpenModal} // Abre o modal no modo de adição
+        className="mb-3"
+      >
+        Adicionar Agendamento
+      </Button>
 
       {error && <p className="text-danger text-center">Ocorreu um erro ao carregar os agendamentos.</p>}
       {loading && <p className="text-center">Carregando agendamentos...</p>}
