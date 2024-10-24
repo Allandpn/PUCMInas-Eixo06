@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import styles from "./Register.module.css";
 import { useFetch } from "../../hooks/useFetch";
 
-
-
 export default function Register() {
   const url = "https://localhost:5005/usuario/";
-  const { data: usuario, httpConfig, loading, error:authError } = useFetch(url);
-
+  const {
+    data: usuario,
+    httpConfig,
+    loading,
+    error: authError,
+  } = useFetch(url);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nomeUsuario: "",
@@ -36,7 +40,6 @@ export default function Register() {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const formData = {
@@ -54,12 +57,11 @@ export default function Register() {
       return;
     }
 
-    const {confPassword, ...formDataFinal} = formData;
+    const { confPassword, ...formDataFinal } = formData;
 
-    console.log("Dados do Formulário: ", formDataFinal); 
+    console.log("Dados do Formulário: ", formDataFinal);
     const res = await httpConfig(formDataFinal, "POST");
-
-    
+    navigate("/agendamentos");
   };
 
   useEffect(() => {
@@ -136,7 +138,10 @@ export default function Register() {
         />
       </Form.Group>
 
-      <Form.Group className={` mb-3 ${error ? 'is-invalid' : ''}`} controlId="formConfPassword">
+      <Form.Group
+        className={` mb-3 ${error ? "is-invalid" : ""}`}
+        controlId="formConfPassword"
+      >
         <Form.Label>Confirmação de Senha</Form.Label>
         <Form.Control
           type="confPassword"
@@ -189,17 +194,26 @@ export default function Register() {
         </Form.Select>
       </Form.Group> */}
 
-        {!loading && <Button variant="primary" type="submit">
-        Registrar
-      </Button>}
+      <div className={styles.buttonContainer}>
+        {!loading && (
+          <Button variant="primary" type="submit">
+            Registrar
+          </Button>
+        )}
         {loading && (
           <Button className="btn" disabled>
             Aguarde...
           </Button>
         )}
-        {error && <div className={styles.error}>{error}</div>}
-
-      
+        <Button
+          variant="secondary"
+          className={styles.button_voltar}
+          onClick={() => navigate("/login")} // Navega para a página de login
+        >
+          Voltar
+        </Button>
+      </div>
+      {error && <div className={styles.error}>{error}</div>}
     </Form>
   );
 }
