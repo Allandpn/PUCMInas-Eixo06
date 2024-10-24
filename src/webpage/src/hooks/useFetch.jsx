@@ -12,7 +12,7 @@ export const useFetch = (url) => {
   const httpConfig = useCallback((dados, methodType) => {
     const headers = { "Content-Type": "application/json" };
     const newConfig = { method: methodType, headers };
-  
+
     if (methodType === "POST" || methodType === "PUT") {
       if (!dados || typeof dados !== "object") {
         console.error("Os dados precisam ser um objeto válido.");
@@ -26,31 +26,31 @@ export const useFetch = (url) => {
       }
       setItemId(dados);
     }
-  
+
     setConfig(newConfig);
     setMethod(methodType);
   }, []);
-  
+
   useEffect(() => {
     if (config && method) {
       performFetch(url, config);
     }
   }, [config, method, url]);
-  
+
   const performFetch = useCallback(
     async (requestUrl, fetchConfig) => {
       setLoading(true);
       try {
         const res = await fetch(requestUrl, fetchConfig);
         if (!res.ok) throw new Error(`Erro: ${res.status}`);
-  
+
         if (method === "DELETE" || method === "POST" || method === "PUT") {
           setShouldReload(true);
         } else {
           const json = await res.json();
           setData(json);
         }
-  
+
         setError(null);
       } catch (err) {
         console.error("Erro na requisição:", err.message);
@@ -63,7 +63,6 @@ export const useFetch = (url) => {
     },
     [method]
   );
-  
 
   useEffect(() => {
     if (!method || shouldReload) {

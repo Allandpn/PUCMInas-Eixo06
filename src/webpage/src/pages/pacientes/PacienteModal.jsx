@@ -60,6 +60,7 @@ const AddPacienteModal = ({
     };
 
     // Passa o objeto atualizado para a função de adicionar paciente
+    console.log("Pacinte cadastrado:", paciente)
     handleAddPaciente(paciente);
     handleClose();
     setFormData({

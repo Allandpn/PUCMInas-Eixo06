@@ -49,3 +49,13 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3; 
 }
+
+.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
