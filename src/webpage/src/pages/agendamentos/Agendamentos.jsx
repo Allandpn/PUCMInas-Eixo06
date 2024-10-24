@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useFetchAgendamento } from "../../hooks/useFetchAgendamento";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col, Badge } from "react-bootstrap";
@@ -44,10 +43,8 @@ const Agendamentos = () => {
     if (editMode) {
       const dataAgendamento = formatarDataAtendimento(data.data, data.horario);
       const urlEdicao = `${url}AtualizarData/${data.id}?data=${dataAtendimento}`;
-      console.log("Editando agendamento", urlEdicao);
       httpConfig(data, "PUT", urlEdicao);
-    } else {
-      console.log("Adicionar")      
+    } else { 
       httpConfig(data, "POST");
     }
     handleCloseModal();

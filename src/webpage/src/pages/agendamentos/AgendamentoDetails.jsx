@@ -45,7 +45,6 @@ export default function AgendamentoDetails() {
   const handleDelete = async (id) => {
     try {
       await httpConfig(id, "DELETE"); // Aguarda a exclusão ser concluída
-      console.log(`Agendamento ${id} excluído com sucesso.`);
   
       // Redireciona para a lista de agendamentos
       navigate("/agendamentos", { replace: true });

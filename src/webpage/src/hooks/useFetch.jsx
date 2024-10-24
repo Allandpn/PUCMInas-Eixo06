@@ -11,14 +11,14 @@ export const useFetch = (url) => {
 
   const httpConfig = useCallback((dados, methodType) => {
     const headers = { "Content-Type": "application/json" };
-    const config = { method: methodType, headers };
-
+    const newConfig = { method: methodType, headers };
+  
     if (methodType === "POST" || methodType === "PUT") {
       if (!dados || typeof dados !== "object") {
         console.error("Os dados precisam ser um objeto válido.");
         return;
       }
-      config.body = JSON.stringify(dados);
+      newConfig.body = JSON.stringify(dados);
     } else if (methodType === "DELETE") {
       if (!dados) {
         console.error("Um ID é necessário para DELETE.");
@@ -26,46 +26,53 @@ export const useFetch = (url) => {
       }
       setItemId(dados);
     }
-
-    setConfig(config);
+  
+    setConfig(newConfig);
     setMethod(methodType);
   }, []);
-
+  
+  useEffect(() => {
+    if (config && method) {
+      performFetch(url, config);
+    }
+  }, [config, method, url]);
+  
   const performFetch = useCallback(
-    async (requestUrl) => {
+    async (requestUrl, fetchConfig) => {
       setLoading(true);
       try {
-        const res = await fetch(requestUrl, config || {});
+        const res = await fetch(requestUrl, fetchConfig);
         if (!res.ok) throw new Error(`Erro: ${res.status}`);
+  
         if (method === "DELETE" || method === "POST" || method === "PUT") {
           setShouldReload(true);
         } else {
           const json = await res.json();
           setData(json);
         }
-
+  
         setError(null);
       } catch (err) {
-        console.error(err.message);
+        console.error("Erro na requisição:", err.message);
         setError(err.message);
       } finally {
         setLoading(false);
-        setConfig(null);
-        setMethod(null);
+        setConfig(null); // Resetar config
+        setMethod(null); // Resetar método
       }
     },
-    [config, method]
+    [method]
   );
+  
 
   useEffect(() => {
     if (!method || shouldReload) {
       performFetch(url);
       setShouldReload(false);
     } else if (method === "POST" || method === "DELETE") {
-      const targetUrl = method === "DELETE" ? `${url}${itemId}` : url;
+      const targetUrl = method === "DELETE" ? `${url}` : url;
       performFetch(targetUrl);
     }
   }, [url, method, itemId, shouldReload, performFetch]);
-  console.log(data);
   return { data, httpConfig, loading, error };
 };
