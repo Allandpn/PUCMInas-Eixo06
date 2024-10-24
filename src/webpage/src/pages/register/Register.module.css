@@ -49,3 +49,24 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3; 
 }
+
+.registerForm {
+  max-width: 400px;
+  margin: 50px auto; 
+  padding: 20px;
+  background-color: #f9f9f9; 
+  border-radius: 10px; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column; /* Coloca os botões um embaixo do outro */
+  gap: 10px; /* Espaçamento entre os botões */
+  margin-top: 20px; /* Margem acima do contêiner de botões */
+}
+
+.button_voltar {
+  background-color: #9aa2a8; /* Cor de fundo diferente para o botão voltar */
+  color: white;
+}

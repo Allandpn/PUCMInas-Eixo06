@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import styles from "./Register.module.css"; 
 
 export default function Register() {
@@ -9,6 +10,8 @@ export default function Register() {
   const [telefone, setTelefone] = useState("");
   const [tipo, setTipo] = useState("");
   const [perfil, setPerfil] = useState("");
+
+  const navigate = useNavigate();  // Usa o hook useNavigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -128,9 +131,18 @@ export default function Register() {
         </Form.Select>
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Registrar
-      </Button>
+      <div className={styles.buttonContainer}>
+        <Button variant="primary" type="submit">
+          Registrar
+        </Button>
+        <Button
+          variant="secondary"
+          className={styles.button_voltar}
+          onClick={() => navigate("/login")}  // Navega para a página de login
+        >
+          Voltar
+        </Button>
+      </div>
     </Form>
   );
 }
