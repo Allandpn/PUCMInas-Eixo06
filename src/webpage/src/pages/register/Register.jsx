@@ -24,6 +24,9 @@ export default function Register() {
       perfil,
     };
     console.log("Dados do Formulário: ", formData);
+
+    // Redireciona para a página de agendamentos após o registro
+    navigate("/agendamentos");
   };
 
   const handleChange = (e) => {
