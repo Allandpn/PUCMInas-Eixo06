@@ -1,24 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
-import AddPacienteModal from "./PacienteModalAdd";
+import AddPacienteModal from "./PacienteModal"; // Modal para Adicionar ou Editar
+
 
 const Pacientes = () => {
   const url = "https://localhost:5005/usuario/";
   const { data: pacientes, httpConfig, loading, error } = useFetch(url);
 
   const [showModal, setShowModal] = useState(false); // Controle do modal
-  const handleOpenModal = () => setShowModal(true); // Abre o modal
-  const handleCloseModal = () => setShowModal(false); // Fecha o modal
+  const [editMode, setEditMode] = useState(false); // Controle do modo de edição
+  const [currentPaciente, setCurrentPaciente] = useState(null); // Paciente atual para edição
 
-  const handleAddPaciente = (data) => {
-    httpConfig(data, "POST");
-    handleCloseModal(); // Fecha o modal após adicionar
+  // Recarrega a lista de Pacientes sempre que o componente for montado
+  useEffect(() => {
+    httpConfig(null, "GET");
+  }, []); // Executa uma vez ao montar
+
+
+  const handleOpenModal = () => {
+    setEditMode(false);
+    setCurrentPaciente(null);
+    setShowModal(true);
   };
 
-  const handleDelete = (id) => {
-    httpConfig(id, "DELETE");
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleAddOrEditPaciente = (data) => {
+    if (editMode) {      
+      httpConfig(data, "PUT");
+    } else {           
+      httpConfig(data, "POST");
+    }
+    handleCloseModal();
   };
 
   return (
@@ -46,18 +61,18 @@ const Pacientes = () => {
                   <Card.Text>
                     <strong>Email:</strong> {paciente.email}
                   </Card.Text>
-                  <div className="d-flex justify-content-between">
+                  <div className="text-center mt-3">
                     <Link to={`/paciente/${paciente.id}`}>
                       <Button variant="primary">Ver Detalhes</Button>
                     </Link>
-                    <Button variant="outline-primary">Editar</Button>
+                    </div>
+                    {/* <Button variant="outline-primary">Editar</Button>
                     <Button
                       variant="outline-danger"
                       onClick={() => handleDelete(paciente.id)}
                     >
                       Excluir
-                    </Button>
-                  </div>
+                    </Button> */}                  
                 </Card.Body>
               </Card>
             </Col>
@@ -65,9 +80,10 @@ const Pacientes = () => {
       </Row>
 
       <AddPacienteModal
-        show={showModal} // Passa o estado do modal
-        handleClose={handleCloseModal} // Função para fechar o modal
-        handleAddPaciente={handleAddPaciente} // Função para adicionar paciente
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleAddPaciente={handleAddOrEditPaciente}
+        paciente={currentPaciente}
       />
     </Container>
   );
