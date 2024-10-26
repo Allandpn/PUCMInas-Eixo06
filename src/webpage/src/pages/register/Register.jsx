@@ -59,7 +59,7 @@ export default function Register() {
 
     const { confPassword, ...formDataFinal } = formData;
 
-    console.log("Dados do Formulário: ", formDataFinal);
+   
     const res = await httpConfig(formDataFinal, "POST");
     navigate("/agendamentos");
   };

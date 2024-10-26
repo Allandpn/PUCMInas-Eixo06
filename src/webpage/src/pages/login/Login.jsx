@@ -1,20 +1,29 @@
+// Login.jsx
 import { useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import styles from "./Login.module.css"; // Importação do CSS
+import { Link, useNavigate } from "react-router-dom"; // Importação do useNavigate
+import { useAuthValue } from "../../context/AuthContext"; 
+import styles from "./Login.module.css"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuthValue(); 
+  const navigate = useNavigate(); // Agora é usado aqui
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email === "" || senha === "") {
       setError("Por favor, preencha todos os campos.");
-    } else {
-      console.log("Email:", email);
-      console.log("Senha:", senha);
+      return;
+    }
+
+    try {
+      await login({ email, password: senha });
+      navigate("/dashboard"); // Redireciona após login bem-sucedido
+    } catch (error) {
+      setError("Erro ao fazer login. Verifique suas credenciais.");
     }
   };
 
