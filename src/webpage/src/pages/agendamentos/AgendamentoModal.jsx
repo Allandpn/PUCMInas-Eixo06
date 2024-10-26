@@ -104,6 +104,7 @@ const handleSubmit = (e) => {
               onChange={handleChange}
               placeholder="Digite o nome do paciente"
               required
+              disabled={!!agendamento}
             />
           </Form.Group>
 
@@ -126,6 +127,7 @@ const handleSubmit = (e) => {
               value={formData.horario}
               onChange={handleChange}
               required
+              disabled={!!agendamento}
             />
           </Form.Group>
 
@@ -138,6 +140,7 @@ const handleSubmit = (e) => {
               onChange={handleChange}
               placeholder="Digite o email do paciente"
               required
+              disabled={!!agendamento}
             />
           </Form.Group>
 
@@ -150,6 +153,7 @@ const handleSubmit = (e) => {
               onChange={handleChange}
               placeholder="Digite o email do médico responsável"
               required
+              disabled={!!agendamento}
             />
           </Form.Group>
 

@@ -5,10 +5,16 @@ import {
   MDBCol,
   MDBIcon,
 } from "mdb-react-ui-kit";
+import { useAuthValue } from "../context/AuthContext";
 
 import styles from "./Footer.module.css";
 const Footer = () => {
+
+  const { user } = useAuthValue();
+
+  if(user) return null;
   return (
+   
     <MDBFooter
       bgColor="light"
       className={`text-center text-lg-start text-muted ${styles.footer}`}
@@ -132,7 +138,8 @@ const Footer = () => {
         </a>
       </div>
     </MDBFooter>
-  );
+  )
+
 };
 
 export default Footer;

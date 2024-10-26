@@ -70,35 +70,7 @@ export default function Register() {
     }
   }, [authError]);
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
 
-  //   switch (name) {
-  //     case "nomeUsuario":
-  //       setNomeUsuario(value);
-  //       break;
-  //     case "email":
-  //       setEmail(value);
-  //       break;
-  //     case "password":
-  //       setPassword(value);
-  //       break;
-  //     case "confPassword":
-  //       setConfPassword(value);
-  //       break;
-  //     case "telefone":
-  //       setTelefone(value);
-  //       break;
-  //     case "tipo":
-  //       setTipo(value);
-  //       break;
-  //     case "perfil":
-  //       setPerfil(value);
-  //     break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   return (
     <Form onSubmit={handleSubmit} className={styles.registerForm}>
@@ -144,7 +116,7 @@ export default function Register() {
       >
         <Form.Label>Confirmação de Senha</Form.Label>
         <Form.Control
-          type="confPassword"
+          type="password"
           name="confPassword"
           value={formData.confPassword}
           onChange={handleChange}
@@ -153,46 +125,6 @@ export default function Register() {
         />
       </Form.Group>
 
-      {/* 
-      <Form.Group className="mb-3" controlId="formTelefone">
-        <Form.Label>Telefone</Form.Label>
-        <Form.Control
-          type="text"
-          name="telefone"
-          value={telefone}
-          onChange={handleChange}
-          placeholder="Digite o telefone"
-          required
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formTipo">
-        <Form.Label>Tipo</Form.Label>
-        <Form.Select
-          name="tipo"
-          value={tipo}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecione o Tipo</option>
-          <option value="0">Profissional</option>
-          <option value="1">Cliente</option>
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formPerfil">
-        <Form.Label>Perfil</Form.Label>
-        <Form.Select
-          name="perfil"
-          value={perfil}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecione o Perfil</option>
-          <option value="0">Administrador</option>
-          <option value="1">Usuário</option>
-        </Form.Select>
-      </Form.Group> */}
 
       <div className={styles.buttonContainer}>
         {!loading && (
