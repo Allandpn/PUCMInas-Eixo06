@@ -1,26 +1,35 @@
+// Login.jsx
 import { useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import styles from "./Login.module.css"; // Importação do CSS
+import { Link, useNavigate } from "react-router-dom"; // Importação do useNavigate
+import { useAuthValue } from "../../context/AuthContext"; 
+import styles from "./Login.module.css"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuthValue(); 
+  const navigate = useNavigate(); // Agora é usado aqui
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email === "" || senha === "") {
       setError("Por favor, preencha todos os campos.");
-    } else {
-      console.log("Email:", email);
-      console.log("Senha:", senha);
+      return;
+    }
+
+    try {
+      await login({ email, password: senha });
+      navigate("/dashboard"); // Redireciona após login bem-sucedido
+    } catch (error) {
+      setError("Erro ao fazer login. Verifique suas credenciais.");
     }
   };
 
   return (
     <Container className={`${styles.login_container} mt-4`}>
-      <Card className="login-card">
+      <Card className={styles.login_card}>
         <Card.Body>
           <Card.Title className="login-title">Bem-vindo de Volta!</Card.Title>
           {error && <p className="text-danger login-error">{error}</p>}
@@ -56,7 +65,7 @@ export default function Login() {
             </Button>
           </Form>
           <p className="mt-2">
-            Não tem uma conta? <Link to="/registrar">Registre-se aqui</Link>
+            Não tem uma conta? <Link to="/register">Registre-se aqui</Link>
           </p>
         </Card.Body>
       </Card>

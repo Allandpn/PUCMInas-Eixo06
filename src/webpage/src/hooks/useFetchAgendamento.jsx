@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 
-export const useFetch = (url) => {
+export const useFetchAgendamento = (url) => {
   const [data, setData] = useState(null);
   const [config, setConfig] = useState(null);
   const [method, setMethod] = useState(null);
@@ -9,16 +9,16 @@ export const useFetch = (url) => {
   const [itemId, setItemId] = useState(null);
   const [shouldReload, setShouldReload] = useState(false);
 
-  const httpConfig = useCallback((dados, methodType) => {
+  const httpConfig = (dados, methodType, customUrl = null) => {
     const headers = { "Content-Type": "application/json" };
-    const newConfig = { method: methodType, headers };
+    const config = { method: methodType, headers };
 
     if (methodType === "POST" || methodType === "PUT") {
       if (!dados || typeof dados !== "object") {
         console.error("Os dados precisam ser um objeto válido.");
         return;
       }
-      newConfig.body = JSON.stringify(dados);
+      config.body = JSON.stringify(dados);
     } else if (methodType === "DELETE") {
       if (!dados) {
         console.error("Um ID é necessário para DELETE.");
@@ -27,23 +27,25 @@ export const useFetch = (url) => {
       setItemId(dados);
     }
 
-    setConfig(newConfig);
+    setConfig(config);
     setMethod(methodType);
-  }, []);
 
-  useEffect(() => {
-    if (config && method) {
-      performFetch(url, config);
+    if (customUrl) {
+      performFetch(customUrl, config); // Passa o config diretamente
+    } else {
+      setConfig(config); // Apenas se não for uma URL customizada
+      setMethod(methodType);
     }
-  }, [config, method, url]);
+
+  };
 
   const performFetch = useCallback(
-    async (requestUrl, fetchConfig) => {
+    async (requestUrl, customConfig = null) => {
       setLoading(true);
       try {
+        const fetchConfig = customConfig || config;        
         const res = await fetch(requestUrl, fetchConfig);
         if (!res.ok) throw new Error(`Erro: ${res.status}`);
-
         if (method === "DELETE" || method === "POST" || method === "PUT") {
           setShouldReload(true);
         } else {
@@ -53,19 +55,19 @@ export const useFetch = (url) => {
 
         setError(null);
       } catch (err) {
-        console.error("Erro na requisição:", err.message);
+        console.error(err.message);
         setError(err.message);
       } finally {
         setLoading(false);
-        setConfig(null); // Resetar config
-        setMethod(null); // Resetar método
+        setConfig(null);
+        setMethod(null);
       }
     },
-    [method]
+    [config, method]
   );
 
   useEffect(() => {
-    if (!method || shouldReload) {
+    if (!method || shouldReload) {     
       performFetch(url);
       setShouldReload(false);
     } else if (method === "POST" || method === "DELETE") {
@@ -73,5 +75,6 @@ export const useFetch = (url) => {
       performFetch(targetUrl);
     }
   }, [url, method, itemId, shouldReload, performFetch]);
+  
   return { data, httpConfig, loading, error };
 };

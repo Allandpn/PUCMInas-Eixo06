@@ -1,15 +1,36 @@
-import { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import styles from "./Register.module.css";
+import { useFetch } from "../../hooks/useFetch";
 
-const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
+export default function Register() {
+  const url = "https://localhost:5005/usuario/";
+  const {
+    data: usuario,
+    httpConfig,
+    loading,
+    error: authError,
+  } = useFetch(url);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     nomeUsuario: "",
     password: "",
+    confPassword: "",
     email: "",
-    telefone: "",
-    tipo: "",
-    perfil: "",
+    telefone: "0",
+    tipo: 0,
+    perfil: 0,
   });
+  // const [nomeUsuario, setNomeUsuario] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confPassword, setConfPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  // const [telefone, setTelefone] = useState("");
+  // const [tipo, setTipo] = useState("");
+  // const [perfil, setPerfil] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,116 +40,112 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // const formData = {
+    //   nomeUsuario,
+    //   password,
+    //   confPassword,
+    //   email,
+    //   telefone: null,
+    //   tipo: 0,
+    //   perfil: 0,
+    // };
 
-    const paciente = {
-      ...formData,
-      tipo: parseInt(formData.tipo, 10), // Converte para inteiro
-      perfil: parseInt(formData.perfil, 10), // Converte para inteiro
-    };
+    if (formData.password !== formData.confPassword) {
+      setError("As senhas precisam ser iguais.");
+      return;
+    }
 
-    // Passa o objeto atualizado para a função de adicionar paciente
-    handleAddPaciente(paciente);
-    handleClose();
-    setFormData({
-      // Reseta o formulário
-      nomeUsuario: "",
-      password: "",
-      email: "",
-      telefone: "",
-      tipo: "",
-      perfil: "",
-    });
+    const { confPassword, ...formDataFinal } = formData;
+
+   
+    const res = await httpConfig(formDataFinal, "POST");
+    navigate("/agendamentos");
   };
 
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
+
+
+
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Adicionar Usuario</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formNome">
-            <Form.Label>Nome do Usuario</Form.Label>
-            <Form.Control
-              type="text"
-              name="nomeUsuario"
-              value={formData.nomeUsuario}
-              onChange={handleChange}
-              placeholder="nome"
-              required
-            />
-          </Form.Group>
+    <Form onSubmit={handleSubmit} className={styles.registerForm}>
+      <Form.Group className="mb-3" controlId="formNome">
+        <Form.Label>Nome do Usuário</Form.Label>
+        <Form.Control
+          type="text"
+          name="nomeUsuario"
+          value={formData.nomeUsuario}
+          onChange={handleChange}
+          placeholder="Nome"
+          required
+        />
+      </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formData">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+      <Form.Group className="mb-3" controlId="formEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Digite o seu email"
+          required
+        />
+      </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Digite o email do paciente"
-              required
-            />
-          </Form.Group>
+      <Form.Group className="mb-3" controlId="formPassword">
+        <Form.Label>Senha</Form.Label>
+        <Form.Control
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Digite a senha"
+          required
+        />
+      </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formHorario">
-            <Form.Label>Telefone</Form.Label>
-            <Form.Control
-              name="telefone"
-              value={formData.telefone}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+      <Form.Group
+        className={` mb-3 ${error ? "is-invalid" : ""}`}
+        controlId="formConfPassword"
+      >
+        <Form.Label>Confirmação de Senha</Form.Label>
+        <Form.Control
+          type="password"
+          name="confPassword"
+          value={formData.confPassword}
+          onChange={handleChange}
+          placeholder="Confirme a sua senha"
+          required
+        />
+      </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formTipo">
-            <Form.Label>Tipo</Form.Label>
-            <Form.Select
-              name="tipo" // Nome da propriedade no estado
-              value={formData.tipo} // Valor do estado
-              onChange={handleChange} // Função que atualiza o estado
-              required
-            >
-              <option value="">Selecione o Tipo</option>
-              <option value="0">Profissional</option>
-              <option value="1">Cliente</option>
-            </Form.Select>
-          </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formPerfil">
-            <Form.Label>Perfil</Form.Label>
-            <Form.Select
-              name="perfil" // Nome da propriedade no estado
-              value={formData.perfil} // Valor do estado
-              onChange={handleChange} // Função que atualiza o estado
-              required
-            >
-              <option value="">Selecione o Perfil</option>
-              <option value="0">Administrador</option>
-              <option value="1">Usuário</option>
-            </Form.Select>
-          </Form.Group>
-
+      <div className={styles.buttonContainer}>
+        {!loading && (
           <Button variant="primary" type="submit">
-            Adicionar
+            Registrar
           </Button>
-        </Form>
-      </Modal.Body>
-    </Modal>
+        )}
+        {loading && (
+          <Button className="btn" disabled>
+            Aguarde...
+          </Button>
+        )}
+        <Button
+          variant="secondary"
+          className={styles.button_voltar}
+          onClick={() => navigate("/login")} // Navega para a página de login
+        >
+          Voltar
+        </Button>
+      </div>
+      {error && <div className={styles.error}>{error}</div>}
+    </Form>
   );
-};
-
-export default AddPacienteModal;
+}

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card, Button, Container } from "react-bootstrap";
-import { useFetch } from "../../hooks/useFetch";
+import { useNavigate } from "react-router-dom";
+import { useFetchAgendamento } from "../../hooks/useFetchAgendamento";
 import styles from "./AgendamentoDetails.module.css";
 import AddAgendamentoModal from "./AgendamentoModal"; // Modal para Adicionar ou Editar
 
@@ -9,11 +10,18 @@ export default function AgendamentoDetails() {
   const { id } = useParams();
 
   const url = "https://localhost:5005/agendamentos/" + id;
-  const { data: agendamento, httpConfig, loading, error } = useFetch(url);
+  const {
+    data: agendamento,
+    httpConfig,
+    loading,
+    error,
+  } = useFetchAgendamento(url);
 
   const [showModal, setShowModal] = useState(false); // Controle do modal
   const [editMode, setEditMode] = useState(false); // Controle do modo de edição
   const [currentAgendamento, setCurrentAgendamento] = useState(null); // Agendamento atual para edição
+  const navigate = useNavigate();
+
 
   // Função para abrir o modal no modo de edição
   const handleOpenEditModal = (agendamento) => {
@@ -24,19 +32,28 @@ export default function AgendamentoDetails() {
 
   const handleCloseModal = () => setShowModal(false); // Fecha o modal
 
-  // Função para adicionar ou editar um agendamento
   const handleAddOrEditAgendamento = (data) => {
     if (editMode) {
-      httpConfig(data, "PUT"); // Faz requisição PUT para editar
+      const urlEdicao = `https://localhost:5005/agendamentos/AtualizarData/${id}?data=${data.dataAtendimento}`;      
+      httpConfig(data, "PUT", urlEdicao);
     } else {
-      httpConfig(data, "POST"); // Faz requisição POST para adicionar
+      httpConfig(data, "POST");
     }
-    handleCloseModal(); // Fecha o modal após adicionar/editar
+    handleCloseModal();
   };
 
-  const handleDelete = (id) => {
-    httpConfig(id, "DELETE");
+  const handleDelete = async (id) => {
+    try {
+      await httpConfig(id, "DELETE"); // Aguarda a exclusão ser concluída
+  
+      // Redireciona para a lista de agendamentos
+      navigate("/agendamentos", { replace: true });
+    } catch (error) {
+      console.error("Erro ao excluir agendamento:", error);
+    }
   };
+  
+  
 
   return (
     <Container className="mt-4">

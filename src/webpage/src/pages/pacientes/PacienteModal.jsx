@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
+const AddPacienteModal = ({ 
+  show,
+  handleClose,
+  handleAddPaciente,
+  paciente, }) => {
   const [formData, setFormData] = useState({
     nomeUsuario: "",
     password: "",
@@ -10,6 +14,33 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
     tipo: "",
     perfil: "",
   });
+
+ // Preenche o formulário com os dados do agendamento para edição
+ useEffect(() => {
+  if (paciente) {
+    setFormData({
+      nomeUsuario: paciente.nomeUsuario,
+      password: paciente.password,
+      email: paciente.email,
+      telefone: paciente.telefone,
+      tipo: paciente.tipo,
+      perfil: paciente.perfil,
+    
+    });
+  } else {
+    // Reseta o formulário se não houver paciente
+    setFormData({
+      nomeUsuario: "",
+      password: "",
+      email: "",
+      telefone: "",
+      tipo: "",
+      perfil: "",
+    });
+  }
+}, [paciente]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +60,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
     };
 
     // Passa o objeto atualizado para a função de adicionar paciente
+    console.log("Pacinte cadastrado:", paciente)
     handleAddPaciente(paciente);
     handleClose();
     setFormData({
@@ -62,7 +94,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formData">
-            <Form.Label>Password</Form.Label>
+            {paciente ?  <Form.Label>Nova Senha</Form.Label> :  <Form.Label>Password</Form.Label>}
             <Form.Control
               type="password"
               name="password"
@@ -123,7 +155,7 @@ const AddPacienteModal = ({ show, handleClose, handleAddPaciente }) => {
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            Adicionar
+            {paciente ? "Salvar Alterações" : "Adicionar"}
           </Button>
         </Form>
       </Modal.Body>
