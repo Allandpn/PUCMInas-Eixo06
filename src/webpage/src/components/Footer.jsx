@@ -12,9 +12,9 @@ const Footer = () => {
 
   const { user } = useAuthValue();
 
-  if(user) return null;
+  if (user) return null;
   return (
-   
+
     <MDBFooter
       bgColor="light"
       className={`text-center text-lg-start text-muted ${styles.footer}`}
@@ -113,7 +113,7 @@ const Footer = () => {
                   </p>
                   <p>
                     <MDBIcon icon="envelope" className="me-3" />
-                    contato@fisioterapiasaude.com.br
+                    contato@agendafisio.com.br
                   </p>
                   <p>
                     <MDBIcon icon="mobile-alt" className="me-3" /> +55 31 99663-5156
@@ -134,7 +134,7 @@ const Footer = () => {
           className="text-reset fw-bold"
           href="https://www.fisioterapiasaude.com.br/"
         >
-          Fisioterapia Saúde
+          Agenda fisio
         </a>
       </div>
     </MDBFooter>
