@@ -48,7 +48,7 @@ const Navbarr = () => {
               to="/login"
               className={({ isActive }) => (isActive ? styles.active : "")}
             >
-              <Button onClick={logout}>Logout</Button>
+              <Button onClick={logout}>Sair</Button>
             </NavLink>
           ) : (
             <NavLink
