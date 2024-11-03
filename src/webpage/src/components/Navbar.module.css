@@ -37,3 +37,10 @@
   font-weight: bold;
   color: #112179;
 }
+.logoutButton {
+  background-color: transparent; /* Fundo transparente, se desejado */
+  border: none; /* Remove a borda padrão */
+  color: #386bc0; /* Cor do texto */
+  cursor: pointer; /* Aponta que é clicável */
+  font-size: 16px; /* Tamanho da fonte */
+}
